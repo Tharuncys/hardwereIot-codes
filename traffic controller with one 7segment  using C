@@ -1,0 +1,59 @@
+#include <reg51.h>
+sbit red = P1^0;
+sbit yellow = P1^1;
+sbit green = P1^2;
+//function decleration
+void seg(void);
+void delay(unsigned int delayTime);
+
+void main()
+{
+    
+    red = 0;
+    yellow = 0;
+    green = 0;
+    
+    while(1)
+    {
+        // Red light on
+        red = 1;
+        yellow = 0;
+        green = 0;
+        seg();  
+        delay(60000);
+
+        // Red light off, Yellow light on
+        red = 0;
+        yellow = 1;
+        green = 0;
+        seg();  // Display numbers on 7-segment display
+        delay(60000);
+
+        // Red and Yellow lights off, Green light on
+        red = 0;
+        yellow = 0;
+        green = 1;
+        seg();  // Display numbers on 7-segment display
+        delay(60000);
+    }
+}
+
+// Function to generate a delay
+void delay(unsigned int delayTime)
+{
+    unsigned int i;
+    for(i = 0; i < delayTime; i++);
+}
+
+// Function to display numbers on 7-segment display
+void seg(void)
+{
+    unsigned char seg[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
+    unsigned char x;
+
+    for(x = 0; x < 10; x++)
+    {
+        P2 = seg[x];
+        delay(60000);  // Adjust delay for proper display visibility
+    }
+}
